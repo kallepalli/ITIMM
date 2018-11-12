@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ITIMM.Models;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITIMM.Data
 {
@@ -11,6 +11,9 @@ namespace ITIMM.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
+        public DbSet<IdentityUser> ApplicationUsers { get; set; }
+
     }
 }

@@ -19,6 +19,10 @@ namespace ITIMM
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) => {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile("appsetting.json",optional:true,reloadOnChange:true);
+                })
                 .UseStartup<Startup>();
     }
 }
