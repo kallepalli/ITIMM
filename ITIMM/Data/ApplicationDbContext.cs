@@ -13,7 +13,14 @@ namespace ITIMM.Data
         {
 
         }
-        public DbSet<IdentityUser> ApplicationUsers { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<ApplicationUser>()
+                .HasOne<Custodian>(au=>au.CustodianUser)
+                .WithOne(c => c.IdentityUser);
+                
+        }
 
     }
 }

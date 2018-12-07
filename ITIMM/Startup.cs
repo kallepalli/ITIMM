@@ -32,12 +32,11 @@ namespace ITIMM
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySQL(
+                options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
-         .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -76,6 +75,7 @@ namespace ITIMM
         {
             var roleManager = serviceProivder.GetService<RoleManager<IdentityRole>>();
             var userManager = serviceProivder.GetService<UserManager<IdentityUser>>();
+            //var userStore=serviceProivder.GetService<Userst>
             string[] roleNames = { "Admin", "AMC", "Custodian" };
             foreach (var role in roleNames)
             {
@@ -94,13 +94,15 @@ namespace ITIMM
             var powerUser = new IdentityUser();
             powerUser.UserName = userName;
             powerUser.Email = userEmail;
-            Task<IdentityUser> user = userManager.FindByNameAsync(userName);
+            var user = userManager.FindByNameAsync(userName);
             user.Wait();
-            if (user.Id>0)
+            if (user==null)
             {
                 var adminUser= userManager.CreateAsync(powerUser, userPWD);
-                if(adminUser!=null)
+                adminUser.Wait();
+                if(adminUser.Id>0)
                 {
+                    
                     Task<IdentityResult> data=userManager.AddToRoleAsync(powerUser, "Admin");
                     data.Wait();
                 }
