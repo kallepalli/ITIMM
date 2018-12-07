@@ -11,5 +11,8 @@ namespace ITIMM.Models
         public string    Id     { get; set; }
         public string Assets { get; set; }
         public ApplicationUser IdentityUser { get; set; }
+        public List<Asset> CustodianAssets { get; set; }
+        public List<Complaints> CustodianComplaints { get; set; }
+        public List<Comments> CustodianComments { get; set; }
     }
 }
