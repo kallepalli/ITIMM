@@ -7,11 +7,13 @@ namespace ITIMM.Models
 {
     public class Complaints
     {
-        public int      AssetId         { get; set; }
-        public int      ComplaintId     { get; set; }
-        public DateTime ComplaintDate   { get; set; }
+        public int Id { get; set; }
+        public DateTime ComplaintDT   { get; set; }
         public bool     Status          { get; set; }
         public string   Descriprion     { get; set; }
-        public int      CustodianId     { get; set; }
+        public Asset AssetComplaints { get; set; }
+        public Comments ComplaintComments { get; set; }
+        public Custodian CustodianComplaint { get; set; }
+
     }
 }

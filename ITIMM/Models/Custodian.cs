@@ -8,7 +8,7 @@ namespace ITIMM.Models
 {
     public class Custodian
     {
-        public string    Id     { get; set; }
+        public int    Id     { get; set; }
         public string Assets { get; set; }
         public ApplicationUser IdentityUser { get; set; }
         public List<Asset> CustodianAssets { get; set; }

@@ -8,10 +8,10 @@ namespace ITIMM.Models
     public class Comments
     {
         public int      CommentId   { get; set; }
-        public int      CustodiaId  { get; set; }
-        public int      AssetId     { get; set; }
         public string   Comment     { get; set; }
         public DateTime CommentDT   { get; set; }
-
+        public Complaints CommentComplaint { get; set; }
+        public Asset    AssetComment { get; set; }
+        public Custodian CutodianComment { get; set; }
     }
 }

@@ -18,9 +18,17 @@ namespace ITIMM.Data
             base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>()
                 .HasOne<Custodian>(au=>au.CustodianUser)
-                .WithOne(c => c.IdentityUser);
-                
+                .WithOne(c => c.IdentityUser)
+                .HasForeignKey<Custodian>(c=>c.Id);
+            builder.Entity<Category>()
+                .HasOne<Asset>(c => c.CategoryAsset)
+                .WithOne(a => a.AssetCategory)
+                .HasForeignKey<Asset>(a => a.AssetCategory);
         }
-
+        public DbSet<Custodian> custodians { get; set; }
+        public DbSet<Category> categories  { get; set; }
+        public DbSet<Asset> Assets { get; set; }
+        public DbSet<Comments> comments  { get; set; }
+        public DbSet<Complaints> complaints  { get; set; }
     }
 }
