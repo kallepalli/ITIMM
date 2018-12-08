@@ -20,10 +20,7 @@ namespace ITIMM.Data
                 .HasOne<Custodian>(au=>au.CustodianUser)
                 .WithOne(c => c.IdentityUser)
                 .HasForeignKey<Custodian>(c=>c.Id);
-            builder.Entity<Category>()
-                .HasOne<Asset>(c => c.CategoryAsset)
-                .WithOne(a => a.AssetCategory)
-                .HasForeignKey<Asset>(a => a.AssetCategory);
+                
         }
         public DbSet<Custodian> custodians { get; set; }
         public DbSet<Category> categories  { get; set; }

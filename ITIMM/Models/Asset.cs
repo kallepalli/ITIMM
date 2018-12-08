@@ -18,7 +18,7 @@ namespace ITIMM.Models
         public string   HostName            { get; set; }
         public string   WorkGroup           { get; set; }
         public Custodian CustodianAsset     { get; set; }
-        public Category AssetCategory { get; set; }
+        public Category Categories { get; set; }
         public List<Complaints> AssetComplaints { get; set; }
     }
 }
