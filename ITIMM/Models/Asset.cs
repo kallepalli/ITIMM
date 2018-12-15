@@ -17,6 +17,10 @@ namespace ITIMM.Models
         public string   OS                  { get; set; }
         public string   HostName            { get; set; }
         public string   WorkGroup           { get; set; }
+        public string IpAddress { get; set; }
+        public string Spec { get; set; }
+        public string CostCenter { get; set; }
+        public string MonitorSlno { get; set; }
         public Custodian CustodianAsset     { get; set; }
         public Category Categories { get; set; }
         public List<Complaints> AssetComplaints { get; set; }

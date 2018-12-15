@@ -13,6 +13,11 @@ namespace ITIMM.Data
         {
 
         }
+        public DbSet<Custodian> custodians { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Asset> Assets { get; set; }
+        public DbSet<Comments> comments { get; set; }
+        public DbSet<Complaints> complaints { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -22,10 +27,6 @@ namespace ITIMM.Data
                 .HasForeignKey<Custodian>(c=>c.Id);
                 
         }
-        public DbSet<Custodian> custodians { get; set; }
-        public DbSet<Category> categories  { get; set; }
-        public DbSet<Asset> Assets { get; set; }
-        public DbSet<Comments> comments  { get; set; }
-        public DbSet<Complaints> complaints  { get; set; }
+
     }
 }

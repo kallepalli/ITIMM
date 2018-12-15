@@ -40,11 +40,25 @@ namespace ITIMM.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CategoryType = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +167,125 @@ namespace ITIMM.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "custodians",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Assets = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_custodians", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_custodians_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Assets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Slno = table.Column<string>(nullable: true),
+                    Make = table.Column<string>(nullable: true),
+                    Model = table.Column<string>(nullable: true),
+                    WarrantyInMonths = table.Column<int>(nullable: false),
+                    InstallationDate = table.Column<DateTime>(nullable: false),
+                    WarrantyExpiryDate = table.Column<DateTime>(nullable: false),
+                    AMCDate = table.Column<DateTime>(nullable: false),
+                    PoNo = table.Column<string>(nullable: true),
+                    OS = table.Column<string>(nullable: true),
+                    HostName = table.Column<string>(nullable: true),
+                    WorkGroup = table.Column<string>(nullable: true),
+                    CustodianAssetId = table.Column<string>(nullable: true),
+                    CategoriesId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Assets_categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Assets_custodians_CustodianAssetId",
+                        column: x => x.CustodianAssetId,
+                        principalTable: "custodians",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "complaints",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ComplaintDT = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false),
+                    Descriprion = table.Column<string>(nullable: true),
+                    AssetComplaintsId = table.Column<int>(nullable: true),
+                    CustodianComplaintId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_complaints", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_complaints_Assets_AssetComplaintsId",
+                        column: x => x.AssetComplaintsId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_complaints_custodians_CustodianComplaintId",
+                        column: x => x.CustodianComplaintId,
+                        principalTable: "custodians",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Comment = table.Column<string>(nullable: true),
+                    CommentDT = table.Column<DateTime>(nullable: false),
+                    CommentComplaintId = table.Column<int>(nullable: true),
+                    AssetCommentId = table.Column<int>(nullable: true),
+                    CutodianCommentId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_comments_Assets_AssetCommentId",
+                        column: x => x.AssetCommentId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_comments_complaints_CommentComplaintId",
+                        column: x => x.CommentComplaintId,
+                        principalTable: "complaints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_comments_custodians_CutodianCommentId",
+                        column: x => x.CutodianCommentId,
+                        principalTable: "custodians",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -189,6 +322,41 @@ namespace ITIMM.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assets_CategoriesId",
+                table: "Assets",
+                column: "CategoriesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assets_CustodianAssetId",
+                table: "Assets",
+                column: "CustodianAssetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_AssetCommentId",
+                table: "comments",
+                column: "AssetCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_CommentComplaintId",
+                table: "comments",
+                column: "CommentComplaintId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_CutodianCommentId",
+                table: "comments",
+                column: "CutodianCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_complaints_AssetComplaintsId",
+                table: "complaints",
+                column: "AssetComplaintsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_complaints_CustodianComplaintId",
+                table: "complaints",
+                column: "CustodianComplaintId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -209,7 +377,22 @@ namespace ITIMM.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "comments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "complaints");
+
+            migrationBuilder.DropTable(
+                name: "Assets");
+
+            migrationBuilder.DropTable(
+                name: "categories");
+
+            migrationBuilder.DropTable(
+                name: "custodians");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

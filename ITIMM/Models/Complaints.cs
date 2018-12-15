@@ -12,7 +12,7 @@ namespace ITIMM.Models
         public bool     Status          { get; set; }
         public string   Descriprion     { get; set; }
         public Asset AssetComplaints { get; set; }
-        public Comments ComplaintComments { get; set; }
+        public List<Comments> ComplaintComments { get; set; }
         public Custodian CustodianComplaint { get; set; }
 
     }

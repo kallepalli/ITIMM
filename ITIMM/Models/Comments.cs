@@ -7,7 +7,7 @@ namespace ITIMM.Models
 {
     public class Comments
     {
-        public int      CommentId   { get; set; }
+        public int      Id   { get; set; }
         public string   Comment     { get; set; }
         public DateTime CommentDT   { get; set; }
         public Complaints CommentComplaint { get; set; }
